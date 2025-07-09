@@ -1,0 +1,39 @@
+name: CI GaragePHP #CI = Continuous Integration = Intégration Continue
+
+# Le workflow se déclenchera automatiquement à chaque push ou pull request sur la branche 'main'.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3" # La version de php qu'on utilise
+          extensions: pdo_mysql, mbstring # Ajoute les extensions nécessaires
+          tools: composer # Installe composer
+
+      - name: Installation des dépendances "composer"
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Lint PHP files # Linting => créer un linter qui permet de vérifier la syntaxe du code PHP
+        run: find . -type f -name "*.php" ! -path "./vendor/*" -exec php -l {} \; | (! grep "Errors parsing")
+
+      - name: Vérification de la version de PHPUnit
+        run: vendor/bin/phpunit --version
+
+      - name: Exécution des tests PHPUnit
+        run: vendor/bin/phpunit # Assurez-vous que PHPUnit est configuré
+
