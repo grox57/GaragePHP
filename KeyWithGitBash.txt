@@ -1,0 +1,4 @@
+
+Générer une clé secrète aléatoire encodée de 32 octés en base 64 avec Git Bash (pour APP_KEY ou JWT_SECRET par exemple) :
+
+> cmde bash -> $ openssl rand -base64 32
