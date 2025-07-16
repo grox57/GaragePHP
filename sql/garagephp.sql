@@ -1,3 +1,4 @@
+-- Active: 1744105609247@@127.0.0.1@3306@garagephp_db
 -- Création de la base de données avec la syntaxe correcte
 CREATE DATABASE garagephp_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
