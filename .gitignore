@@ -29,16 +29,16 @@
 /sessions/
 
 # Fichiers d'IDE et d'éditeurs de texte
-.idea/ # JetBrains (PhpStorm, IntelliJ, etc.)
-.vscode/ # VS Code (extensions, paramètres de workspace)
+.idea/                # JetBrains (PhpStorm, IntelliJ, etc.)
+.vscode/              # VS Code (extensions, paramètres de workspace)
 *.sublime-project
 *.sublime-workspace
 .DS_Store # macOS
 Thumbs.db # Windows
 ehthumbs.db
-.sass-cache/ # Cache Sass/SCSS
-*.log # Fichiers de log génériques
-*.sqlite # Fichiers de base de données SQLite (si utilisé)
+.sass-cache/          # Cache Sass/SCSS
+*.log                 # Fichiers de log génériques
+*.sqlite              # Fichiers de base de données SQLite (si utilisé)
 
 # Fichiers de build ou de distribution
 /build/

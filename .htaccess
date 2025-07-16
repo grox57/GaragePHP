@@ -1,38 +1,20 @@
-# Sécurité Apache: masquer les infos du serveur et de la signature (on dit au serveur web Apache de Wamp que..)
-ServerTokens Prod
-ServerSignature off
-
-# Redirection vers dossier public/
-<IfModule mod_rewrite.c>
+<IfModule mod_rewrite.c="">
   RewriteEngine On
-  # ignorer la casse
-  RewriteCond %{REQUEST_URI} !^/public/ [NC]
-  # 
-  RewriteCond %{REQUEST_URI} !^index.php [NC]
+  RewriteCond %{REQUEST_URI} !^/public/ [NC] #Ignorer la casse
+  RewriteCond %{REQUEST_URI} !^index.php [NC] #Evite les boucles si index.php est déjà ciblé
   RewriteRule ^(.*)$ /public/$1 [L]
 </IfModule>
 
-# Sécurité des fichiers sensibles (protection par interdiction d'accès sauf pour nous)
-<FilesMatch "\.(env|log|sql|md|json|lock)$">
-  Require all granted
-  ## Apache 2.4 et plus, équivalent à :
-  ## Order allow,deny
-  ## Deny from all
+#Sécurité des fichiers sensibles
+<FilesMatch "\.(env|log|sql|md|json|lock|yml|yaml|ini)$">
+  Require all denied
 </FilesMatch>
 
-# Protection des répertoires (protection par interdiction d'accès sauf pour nous)
-<DirectoryMatch "(config|src|test|storage|vendor|bootstrap|resources)">
-  Require all granted
-  ## Apache 2.4 et plus, équivalent à :
-  ## Order allow,deny
-  ## Deny from all
-</DirectoryMatch>
-
-# Headers de sécurité (pour chaque requête on définit ce qui est possible de faire ou non pour l'utilisateur)
+#Headers de sécurité
 <IfModule mod_headers.c>
-  Header always set X-Content-Type-Option nosniff
-  Header always set X-Frame-Option DENY
+  Header always set X-Content-Type-Options nosniff
+  Header always set X-Frame-Options DENY
   Header always set X-XSS-Protection "1; mode=block"
-  ## Header always set Strict-Transport-Security "max-age = 31536000; includeSubDomains" (pour travailler en https)
-  Header always Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+  #Header always set Strict-Transport-Security "max-age = 31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
 </IfModule>
