@@ -41,24 +41,45 @@ class User extends BaseModel
     return $this->role;
   }
 
-  // Setters (avec  validation)
+  // Setters avec validation (on utilise des methodes qui 'set' les différentes propriétes, C'est plus Secure !!!)
+
   public function setUsername(string $username): self
   {
+
+    if (empty(trim($username)) || strlen($username) > 50) {
+      throw new InvalidArgumentException("Nom d'utilisateur invalide.");
+    }
+
+    $this->username = trim($username);
     return $this;
   }
-
   public function setEmail(string $email): self
   {
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      throw new InvalidArgumentException("E-mail invalide.");
+    }
+
+    $this->email = trim(strtolower($email));
     return $this;
   }
-
   public function setPassword(string $password): self
   {
+
+    if (strlen($password) < 9) {
+      throw new InvalidArgumentException("Mot de passe trop court.");
+    }
+
+    $this->password = password_hash($password, PASSWORD_ARGON2ID);
     return $this;
   }
-
   public function setRole(string $role): self
   {
+
+    if (!in_array($role, ['user', 'admin'])) {
+      throw new InvalidArgumentException("Rôle invalide.");
+    }
+    $this->role = $role;
     return $this;
   }
 
